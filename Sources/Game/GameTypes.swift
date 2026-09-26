@@ -71,11 +71,11 @@ enum CourtSpec {
 }
 
 struct PhysCat {
-    static let floor: UInt32 = 1
-    static let wall: UInt32 = 2
-    static let net: UInt32 = 4
-    static let ball: UInt32 = 8
-    static let player: UInt32 = 16
+    static let floor = 1
+    static let wall = 2
+    static let net = 4
+    static let ball = 8
+    static let player = 16
 }
 
 // MARK: - Счёт
