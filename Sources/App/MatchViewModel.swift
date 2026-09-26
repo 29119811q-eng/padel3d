@@ -5,6 +5,7 @@ import UIKit
 final class MatchViewModel: ObservableObject {
     @Published var inGame = false
     @Published var showBrowser = false
+    @Published var showHelp = false
     @Published var score: ScoreSnapshot?
     @Published var banner: String?
     @Published var status = ""
