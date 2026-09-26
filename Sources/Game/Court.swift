@@ -1,6 +1,6 @@
 import SceneKit
 
-func staticBody(mask: UInt32, restitution: CGFloat, friction: CGFloat) -> SCNPhysicsBody {
+func staticBody(mask: Int, restitution: CGFloat, friction: CGFloat) -> SCNPhysicsBody {
     let b = SCNPhysicsBody(type: .static, shape: nil)
     b.categoryBitMask = mask
     b.collisionBitMask = PhysCat.ball
