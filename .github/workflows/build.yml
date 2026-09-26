@@ -3,14 +3,16 @@ name: Build Padel3D (iOS Simulator)
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+
+      - name: Xcode version
+        run: xcodebuild -version
 
       - name: Install xcodegen
         run: brew install xcodegen
@@ -18,11 +20,22 @@ jobs:
       - name: Generate project
         run: xcodegen
 
+      - name: Show schemes
+        run: xcodebuild -list -project Padel3D.xcodeproj
+
       - name: Build for iOS Simulator
         run: |
+          set -o pipefail
           xcodebuild -project Padel3D.xcodeproj \
             -scheme Padel3D \
             -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee xcodebuild.log
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log
