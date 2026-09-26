@@ -1,0 +1,26 @@
+name: Padel3D
+options:
+  bundleIdPrefix: com.yourname
+  deploymentTarget:
+    iOS: "16.0"
+targets:
+  Padel3D:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    info:
+      path: Padel3D-Info.plist
+      properties:
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocalNetworkUsageDescription: "Локальная сеть нужна для сетевых матчей Padel 3D"
+        NSBonjourServices:
+          - _padel3d._tcp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.padel3d
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1,2"
