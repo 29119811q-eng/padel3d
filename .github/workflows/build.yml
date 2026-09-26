@@ -20,9 +20,6 @@ jobs:
       - name: Generate project
         run: xcodegen
 
-      - name: Show schemes
-        run: xcodebuild -list -project Padel3D.xcodeproj
-
       - name: Build for iOS Simulator
         run: |
           set -o pipefail
@@ -32,6 +29,30 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee xcodebuild.log
+
+      - name: Build for iPhone (unsigned IPA for Sideloadly)
+        run: |
+          set -o pipefail
+          xcodebuild -project Padel3D.xcodeproj \
+            -scheme Padel3D \
+            -configuration Debug \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build-device \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee xcodebuild-device.log
+
+      - name: Pack IPA
+        run: |
+          APP_PATH=$(find build-device/Build/Products -name "*.app" -type d | head -1)
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          zip -qr Padel3D-iPhone.ipa Payload
+          ls -lh Padel3D-iPhone.ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Padel3D-iPhone
+          path: Padel3D-iPhone.ipa
 
       - name: Upload build log on failure
         if: failure()
