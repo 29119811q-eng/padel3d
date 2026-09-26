@@ -41,7 +41,7 @@ final class LocalMatchController: NSObject, GameControlling, SCNSceneRendererDel
         world.input[0].dz = y * teamOf(slot: 0).sign
     }
 
-    func setPaused(_ p: Bool) { view.isPaused = p }
+   func setPaused(_ p: Bool) { view.scene?.isPaused = p }
     func shutdown() {}
 
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
