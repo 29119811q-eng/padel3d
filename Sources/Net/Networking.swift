@@ -178,7 +178,7 @@ final class HostController: NSObject, GameControlling, SCNSceneRendererDelegate 
         world.input[0].dz = y * teamOf(slot: 0).sign
     }
 
-    func setPaused(_ p: Bool) { view.isPaused = p }
+   func setPaused(_ p: Bool) { view.scene?.isPaused = p }
 
     func shutdown() {
         timer?.invalidate()
@@ -295,7 +295,7 @@ final class ClientController: NSObject, GameControlling, SCNSceneRendererDelegat
         world.input[mySlot].dz = y * teamOf(slot: mySlot).sign
     }
 
-    func setPaused(_ p: Bool) { view.isPaused = p }
+func setPaused(_ p: Bool) { view.scene?.isPaused = p }
 
     func shutdown() {
         timer?.invalidate()
