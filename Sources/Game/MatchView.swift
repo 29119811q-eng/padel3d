@@ -9,15 +9,15 @@ enum SwingClassifier {
     static func classify(translation t: CGPoint, duration: TimeInterval,
                          ballY: Float, distance: Float) -> Swing? {
         let dt = max(duration, 0.02)
-        let speed = CGFloat(hypot(Float(t.width), Float(t.height))) / CGFloat(dt) // pt/s
+        let speed = CGFloat(hypot(Float(t.x), Float(t.y))) / CGFloat(dt) // pt/s
         guard speed > 300 || distance < 2.2 else { return nil }
 
         var type: ShotType = .drive
-        if t.height < -160 && ballY > 1.85 { type = .smash }
-        else if t.height < -60 { type = .lob }
+        if t.y < -160 && ballY > 1.85 { type = .smash }
+        else if t.y < -60 { type = .lob }
         else if speed > 900 && distance < 2.6 { type = .volley }
 
-        let aim = Float(clamp(t.width / 220, -1, 1))
+        let aim = Float(clamp(t.x / 220, -1, 1))
         let power = Float(clamp(speed / 1400, 0.4, 1))
         return Swing(type: type, aim: aim, power: power)
     }
@@ -47,7 +47,7 @@ final class SwingView: SCNView {
         let end = t.location(in: self)
         let tr = CGPoint(x: end.x - start.x, y: end.y - start.y)
         let dur = (event?.timestamp ?? CACurrentMediaTime()) - startTime
-        let info = ballInfo?() ?? (1, 99)
+        let info: (y: Float, dist: Float) = ballInfo?() ?? (y: 1, dist: 99)
         if let sw = SwingClassifier.classify(translation: tr, duration: dur,
                                              ballY: info.y, distance: info.dist) {
             onSwing?(sw)
